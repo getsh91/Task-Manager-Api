@@ -44,6 +44,6 @@ class AuthenticationController extends Controller
             'user'=>$user,
             'token'=>$token,
             'message'=>'User login successfully'
-        ],201);
+        ],200);
     }
 }
