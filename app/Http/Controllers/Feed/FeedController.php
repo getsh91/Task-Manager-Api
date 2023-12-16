@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\PostRequest;
 use App\Models\Feed;
 use App\Models\Like;
+use App\Models\Comment;
 
 class FeedController extends Controller
 {
@@ -58,6 +59,38 @@ class FeedController extends Controller
             'message' => 'liked'
         ], 201);
     }
+
+    public function commentPost(Request $request, $feed_id)
+    {
+        Request()->validate([
+            'body'=>'required'
+        ]);
+        $feed = Feed::find($feed_id);
+
+        if (!$feed) {
+            return response([
+                'message' => 'Feed not found'
+            ], 404);
+        }
+       
+        $comment_post = Comment::create([
+            'user_id' => auth()->id(),
+            'feed_id' => $feed_id,
+            'body' => $request->body
+        ]);
+        return response([
+            'message' => 'commented'
+        ], 201);
+        
+    }
+    public function getComment($feed_id)
+    {
+       $comments=Comment::with('feed')->with('user')->whereFeedId($feed_id)->latest()->get();
+       return response([
+           'comments'=>$comments
+       ],200);
+    }
+   
 }
 
 // public function store (PostRequest $request){

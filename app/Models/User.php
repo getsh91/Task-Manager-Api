@@ -48,4 +48,7 @@ class User extends Authenticatable
     public function feed():HasMany{
         return $this->hasmany(Feed::class);
     }
+    public function comments():HasMany{
+        return $this->hasmany(Comment::class);
+    }
 }
