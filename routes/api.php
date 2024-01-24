@@ -20,8 +20,8 @@ use App\Http\Controllers\Feed\FeedController;
 Route::get('/feeds', [FeedController::class, 'index'])->middleware('auth:sanctum');
 Route::post('/feed/store', [FeedController::class, 'store'])->middleware('auth:sanctum');
 Route::post('/feed/like/{feed_id}', [FeedController::class, 'likePost'])->middleware('auth:sanctum');
-Route::post('/feed/comment/{feed_id}', [FeedController::class, 'commentPost'])->middleware('auth:sanctum');
-Route::get('/feed/comments/{feed_id}', [FeedController::class, 'getComment'])->middleware('auth:sanctum');
+Route::post('/feed/comment/{feed_id}', [FeedController::class, 'comment'])->middleware('auth:sanctum');
+Route::get('/feed/getcomments/{feed_id}', [FeedController::class, 'getComments'])->middleware('auth:sanctum');
 
 
 

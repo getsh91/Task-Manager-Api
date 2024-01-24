@@ -6,9 +6,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use App\Models\User;
-use App\Models\Like;
-use App\Models\Comment;
 
 class Feed extends Model
 {
@@ -16,7 +13,7 @@ class Feed extends Model
 
     protected $fillable = [
         'user_id',
-        'content',
+        'content'
     ];
 
     protected $appends = ['liked'];
@@ -40,5 +37,4 @@ class Feed extends Model
     {
         return $this->hasMany(Comment::class);
     }
-   
 }
