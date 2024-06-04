@@ -17,9 +17,12 @@ class AuthenticationController extends Controller
         $request->validated();
 
         $userdata=[
-            'name'=>$request->name,
-            'username'=>$request->username,
+            'firstName'=>$request->firstName,
+            'lastName'=>$request->lastName,
             'email'=>$request->email,
+            'phoneNumber'=>$request->phoneNumber,
+            'address'=>$request->address,
+            'billNumber'=>$request->billNumber,
             'password'=>Hash::make($request->password)
         ];
         $user=User::create($userdata);
@@ -33,7 +36,7 @@ class AuthenticationController extends Controller
 
     public function login(LoginRequest $request){
         $request->validated();
-        $user=User::where('username',$request->username)->first();
+        $user=User::where('phoneNumber',$request->phoneNumber)->first();
         if(!$user || !Hash::check($request->password,$user->password)){
             return response([
                 'message'=>'Invalid credentials'
