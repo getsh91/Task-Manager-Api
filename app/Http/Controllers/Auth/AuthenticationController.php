@@ -8,13 +8,26 @@ use App\Http\Requests\RegisterRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\LoginRequest;
+use Illuminate\Support\Facades\Validator;
 
 
 class AuthenticationController extends Controller
 {
     //
-    public function register(RegisterRequest $request){
-        $request->validated();
+    public function register(Request $request){
+        
+        $validatedData = Validator::make($request->all(), [
+            'firstName' => 'required|string|min:3',
+            'lastName' => 'required|string|min:3',
+            'phoneNumber' => 'required|string|min:10',
+            'address' => 'required|string|min:3',
+            'billNumber' => 'required|string|min:3',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:6|',
+        ]);
+        if ($validatedData->fails()) {
+            return response(['message' => $validatedData->errors()->first()], 422);
+        }
 
         $userdata=[
             'firstName'=>$request->firstName,
@@ -26,16 +39,23 @@ class AuthenticationController extends Controller
             'password'=>Hash::make($request->password)
         ];
         $user=User::create($userdata);
-        $token=$user->createToken('auth_token')->plainTextToken;
+        
          return response([
             'user'=>$user,
-            'token'=>$token,
+    
             'message'=>'User register successfully'
          ],201);
     }
 
-    public function login(LoginRequest $request){
-        $request->validated();
+    public function login(Request $request){
+        $validatedData = Validator::make($request->all(), [
+            'phoneNumber' => 'required|string|min:10',
+            'password' => 'required|min:6|',
+        ]);
+        if ($validatedData->fails()) {
+            return response(['message' => $validatedData->errors()->first()], 422);
+        }
+
         $user=User::where('phoneNumber',$request->phoneNumber)->first();
         if(!$user || !Hash::check($request->password,$user->password)){
             return response([
