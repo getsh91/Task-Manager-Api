@@ -17,8 +17,14 @@ use App\Http\Controllers\Payment\PaymentController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-Route::get('/payments', [PaymentController::class, 'index'])->middleware('auth:sanctum');
-Route::post('/payment/store', [PaymentController::class, 'paymentStore'])->middleware('auth:sanctum');
+
+Route::middleware('auth:sanctum')->group(function(){
+    
+    Route::get('/payments', [PaymentController::class, 'index']);
+    Route::post('/payment/store', [PaymentController::class, 'paymentStore']);
+});
+
+Route::get("/callback/{reference}", [PaymentController::class, 'callback'])->name('callback');
 
 
 
