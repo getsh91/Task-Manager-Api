@@ -61,7 +61,7 @@ class PaymentController extends Controller
         ];
    
         $payment = Chapa::initializePayment($data);
-        
+       
         if ($payment['status'] !== 'success') {
             return response()->json([
                 'message' => 'Something went really bad'
